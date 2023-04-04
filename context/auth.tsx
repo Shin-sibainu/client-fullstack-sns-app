@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       apiClient.defaults.headers["Authorization"] = `Bearer ${token}`;
       // トークンが存在する場合、ユーザー情報を取得して状態にセットする
       apiClient
-        .get("/user/find")
+        .get("/users/find")
         .then((res: any) => {
           setUser(res.data.user);
         })
@@ -60,9 +60,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     }
   }, []);
 
-  const login = (token: string) => {
+  const login = async (token: string) => {
     localStorage.setItem("auth_token", token);
     apiClient.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+    try {
+      const response = await apiClient.get("/users/find");
+      setUser(response.data.user);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const logout = () => {

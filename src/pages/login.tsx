@@ -3,11 +3,14 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import apiClient from "../../lib/apiClient";
+import { useAuth } from "../../context/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const { login } = useAuth();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -19,10 +22,10 @@ const Login = () => {
         password,
       });
 
-      const { user, token } = response.data;
+      const token = response.data.token;
 
-      //ログインに成功したらトークンをセット
-      localStorage.setItem("auth_token", token);
+      // トークンをAuthProviderのlogin関数に渡す
+      login(token);
 
       // 登録が成功したら、ログインページにリダイレクトする
       router.push("/");

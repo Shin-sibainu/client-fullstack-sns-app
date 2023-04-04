@@ -1,18 +1,47 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import apiClient from "../../lib/apiClient";
+import { useAuth } from "../../context/auth";
+import { Post } from "../types";
+import PostComponent from "./PostComponent";
 
 const Chat = () => {
-  const [postText, setPostText] = useState("");
+  const { user } = useAuth();
+
+  const [postText, setPostText] = useState<string>("");
+  const [latestPosts, setLatestPosts] = useState<Post[]>([]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     //投稿＆DBへ追加
-    const newPost = await axios.post("/api/post");
+    try {
+      const newPost = await apiClient.post("/posts/post", {
+        content: postText,
+      });
+      console.log(newPost);
+      setLatestPosts((prevPosts) => [newPost.data, ...prevPosts]);
+      setPostText("");
+    } catch (err) {
+      alert(err);
+    }
 
     setPostText("");
   };
+
+  useEffect(() => {
+    const fetchLatestPosts = async () => {
+      try {
+        const response = await apiClient.get("/posts/get_latest_post");
+        setLatestPosts(response.data);
+      } catch (error) {
+        console.error("Error fetching latest posts:", error);
+      }
+    };
+
+    fetchLatestPosts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -33,27 +62,9 @@ const Chat = () => {
             </button>
           </form>
         </div>
-        <div className="bg-white shadow-md rounded p-4">
-          {/* Replace this with fetched posts from API */}
-          <div className="mb-4">
-            <div className="flex items-center mb-2">
-              <img
-                className="w-10 h-10 rounded-full mr-2"
-                src="https://via.placeholder.com/150"
-                alt="User Avatar"
-              />
-              <div>
-                <h2 className="font-semibold text-md">User Name</h2>
-                <p className="text-gray-500 text-sm">2 hours ago</p>
-              </div>
-            </div>
-            <p className="text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-              venenatis scelerisque.
-            </p>
-          </div>
-          {/* End of the post */}
-        </div>
+        {latestPosts.map((post: Post) => (
+          <PostComponent key={post.id} post={post} />
+        ))}
       </main>
     </div>
   );
