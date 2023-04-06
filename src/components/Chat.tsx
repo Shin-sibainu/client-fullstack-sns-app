@@ -24,7 +24,7 @@ const Chat = () => {
       setLatestPosts((prevPosts) => [newPost.data, ...prevPosts]);
       setPostText("");
     } catch (err) {
-      alert(err);
+      alert("ログインしてください。");
     }
 
     setPostText("");

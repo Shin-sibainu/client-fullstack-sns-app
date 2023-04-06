@@ -14,7 +14,7 @@ const Signup = () => {
 
     // 新規登録処理を行うAPIエンドポイントを呼び出す
     try {
-      const response = await apiClient.post("/auth/register", {
+      await apiClient.post("/auth/register", {
         name,
         email,
         password,

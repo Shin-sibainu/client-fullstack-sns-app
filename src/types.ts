@@ -1,12 +1,18 @@
-// User型は既に定義されていることを想定しています。例えば：
+export interface Profile {
+  id: number;
+  bio: string;
+  profileImageUrl: string;
+  userId: number;
+  user: User;
+}
+
 export interface User {
   id: number;
   name: string;
   email: string;
   password: String;
   posts: Post[];
-  bio: string;
-  user: any;
+  profile: Profile;
 }
 
 export interface Post {
