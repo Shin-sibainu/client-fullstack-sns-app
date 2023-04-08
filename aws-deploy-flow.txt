@@ -1,0 +1,13 @@
+~フロントエンド~
+👇これはNext.jsの機能に対応していなかった。
+1. awsのサインイン
+2. Next.jsでnpm run buildとnpm run exportコマンドを実行する。
+3. S3バケットにoutディレクトリ内のファイルを全てアップロード
+4. ファイルアクセスを全部許可
+5. cloudfunctionでディストリビューション設定
+
+~バックエンド~
+6. nodejsでserverless-httpをインストール
+7. S3に圧縮したapiをアップロード
+8. lambudafuntion関数を構築し、S3パスを指定して関数にセット
+9. apigateway設定でapiエンドポイント設定
