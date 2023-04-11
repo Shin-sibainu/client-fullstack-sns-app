@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import apiClient from "../../lib/apiClient";
 import { useAuth } from "../../context/auth";
 
