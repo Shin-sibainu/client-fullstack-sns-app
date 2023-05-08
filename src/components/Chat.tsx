@@ -20,7 +20,7 @@ const Chat = () => {
       const newPost = await apiClient.post("/posts/post", {
         content: postText,
       });
-      console.log(newPost);
+      // console.log(newPost);
       setLatestPosts((prevPosts) => [newPost.data, ...prevPosts]);
       setPostText("");
     } catch (err) {
